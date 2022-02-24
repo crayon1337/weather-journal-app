@@ -26,15 +26,16 @@ function handleClick(e) {
             
             // If the API returns cod with 404 return an alert with the message
             if(result.cod == '404')
-                return alert(result.message);
+                Promise.reject(result.message);
+            else {
+                let feeling = document.getElementById('feelings').value;
 
-            let feeling = document.getElementById('feelings').value;
-
-            postData('/post', {
-                temperature: result.main.temp,
-                date: new Date().toLocaleDateString('en-US'),
-                content: feeling
-            });
+                postData('/post', {
+                    temperature: result.main.temp,
+                    date: new Date().toLocaleDateString('en-US'),
+                    content: feeling
+                });
+            }
         })
         .then(updateUI());
     else
@@ -85,7 +86,7 @@ const getProjectData = async () => {
 const updateUI = async() => {
     const response = await getProjectData();
 
-    if(response) {
+    if(Object.keys(response).length > 0) {
         document.getElementById('date').innerHTML = `Date: ${response.date}`;
         document.getElementById('temp').innerHTML = `Temperature: ${response.temperature}`;
         document.getElementById('content').innerHTML = `Content: ${response.content}`;
