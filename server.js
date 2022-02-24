@@ -33,8 +33,17 @@ function startServer() {
 }
 
 // Initialize all route with a callback function
+app.get('/all', getData);
 
 // Callback function to complete GET '/all'
+function getData(request, response) {
+    response.send(projectData);
+}
 
 // Post Route
-  
+app.post('/post', postData);
+
+// Callback function to post data
+function postData(request, response) {
+    projectData.push(request.body);
+}
