@@ -23,6 +23,11 @@ function handleClick(e) {
          */
         getWebApiData(zip)
         .then(function(result) {
+            
+            // If the API returns cod with 404 return an alert with the message
+            if(result.cod == '404')
+                return alert(result.message);
+
             let feeling = document.getElementById('feelings').value;
 
             postData('/post', {
@@ -38,12 +43,7 @@ function handleClick(e) {
 
 /* Function to GET Web API Data*/
 const getWebApiData = async (zip) => {
-    const response = await fetch(openWeatherURL+zip+'&appid='+apiKey, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-    })
+    const response = await fetch(openWeatherURL+zip+'&appid='+apiKey)
 
     try {
         return response.json();

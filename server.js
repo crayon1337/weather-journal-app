@@ -45,11 +45,16 @@ app.post('/post', postData);
 
 // Callback function to post data
 function postData(request, response) {
+    // Clear the object
+    projectData = {};
+
+    // Set the object based on the data we received
     projectData = {
         temperature: request.body.temperature,
         date: request.body.date,
         content: request.body.content
     }
 
+    // Send a response with the filled object
     response.send(projectData);
 }
