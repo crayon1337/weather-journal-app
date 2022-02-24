@@ -45,5 +45,11 @@ app.post('/post', postData);
 
 // Callback function to post data
 function postData(request, response) {
-    projectData.push(request.body);
+    projectData = {
+        temperature: request.body.temperature,
+        date: request.body.date,
+        content: request.body.content
+    }
+
+    response.send(projectData);
 }
