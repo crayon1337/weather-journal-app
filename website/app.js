@@ -1,5 +1,5 @@
 // Personal API Key for OpenWeatherMap API
-const apiKey = '124e10c3c63a51cd59f7a6c15edab0a6';
+const apiKey = '124e10c3c63a51cd59f7a6c15edab0a6&units=imperial';
 const openWeatherURL = 'https://cors-anywhere.herokuapp.com/http://api.openweathermap.org/data/2.5/weather?zip='
 
 // Event listener to add function to existing HTML DOM element
@@ -37,9 +37,13 @@ function handleClick(e) {
                 });
             }
         })
-        .then(updateUI());
-    else
+        .then(function(result) {
+            getProjectData();
+        });
+    else {
         alert('Please write a zip code...');
+        throw new Error('Could not get the zip code from the input. It might not be added yet!');
+    }
 }
 
 /* Function to GET Web API Data*/
@@ -47,9 +51,10 @@ const getWebApiData = async (zip) => {
     const response = await fetch(openWeatherURL+zip+'&appid='+apiKey)
 
     try {
-        return response.json();
+        const data = await response.json();
+        return data;
     } catch(error) {
-        new Error('Could not get Openwebweather API results');
+        throw new Error('Could not get Openwebweather API results');
     }
 }
 
@@ -65,9 +70,11 @@ const postData = async (url = '', data = {}) => {
     })
 
     try {
-        return response.json();
+        const data = await response.json();
+
+        return data;
     } catch(error) {
-        new Error('Could not post project data @ app.js');
+        throw new Error('Could not post project data @ app.js');
     }
 };
 
@@ -76,20 +83,13 @@ const getProjectData = async () => {
     const response = await fetch('/all');
 
     try {
-        return response.json();
+        const data = await response.json();
+        
+        document.getElementById('date').innerHTML = `Date: ${data.date}`;
+        document.getElementById('temp').innerHTML = `Temperature: ${Math.round(data.temperature)} degrees`;
+        document.getElementById('content').innerHTML = `Content: ${data.content}`;
+
     } catch(error) {
-        new Error('Could not get project data @ app.js');
+        throw new Error('Could not get data @ app.js');
     }
 };
-
-/* Function to update the UI */
-const updateUI = async() => {
-    const response = await getProjectData();
-
-    if(Object.keys(response).length > 0) {
-        document.getElementById('date').innerHTML = `Date: ${response.date}`;
-        document.getElementById('temp').innerHTML = `Temperature: ${response.temperature}`;
-        document.getElementById('content').innerHTML = `Content: ${response.content}`;
-    } else 
-        alert('Could not get the projectData');
-}
