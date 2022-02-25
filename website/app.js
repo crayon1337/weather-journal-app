@@ -1,6 +1,6 @@
 // Personal API Key for OpenWeatherMap API
 const apiKey = '124e10c3c63a51cd59f7a6c15edab0a6&units=imperial';
-const openWeatherURL = 'https://cors-anywhere.herokuapp.com/http://api.openweathermap.org/data/2.5/weather?zip='
+const openWeatherURL = 'http://api.openweathermap.org/data/2.5/weather?zip='
 
 // Event listener to add function to existing HTML DOM element
 document.getElementById('generate').addEventListener('click', handleClick);
